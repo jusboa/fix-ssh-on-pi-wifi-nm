@@ -197,12 +197,12 @@ then
   echo_error "   ssh-keygen -t ed25519 -f ./${public_key_file} -C \"Raspberry Pi keys\""
   exit 3
 fi
-
+# version_id=$(grep "^VERSION_ID=" /etc/os-release | cut -d "=" -f2 | tr -d '"')
 if [ ! -e "${wifi_file}" ]
 then
-  echo_error "Can't find the wpa_supplicant.conf file \"${wifi_file}\""
+  echo_error "Can't find the NetworkManager conf file \"${wifi_file}\""
   echo_error "You can modify the one provided here:"
-  echo_error "   https://github.com/kenfallon/fix-ssh-on-pi/blob/master/wpa_supplicant.conf_example"
+  echo_error  "   https://forums.raspberrypi.com/viewtopic.php?t=357623"
   exit 14
 fi
 
@@ -349,15 +349,6 @@ else
   exit 22
 fi
 
-cp "${wifi_file}" "${sdcard_mount_p1}/wpa_supplicant.conf"
-if [ -e "${sdcard_mount_p1}/wpa_supplicant.conf" ]
-then
-  echo_debug "The wifi file \"${wifi_file}\" has been copied"
-else
-  echo_error "Can't find the wpa_supplicant file \"${sdcard_mount_p1}/wpa_supplicant.conf\""
-  exit 8
-fi
-
 touch "${sdcard_mount_p1}/ssh"
 if [ -e "${sdcard_mount_p1}/ssh" ]
 then
@@ -410,6 +401,20 @@ if [ ! -e "${sdcard_mount_p2}/etc/shadow" ]
 then
     echo_error "Can't find the mounted card\"${sdcard_mount_p2}/etc/shadow\""
     exit 10
+fi
+if [ ${version_id} -ge 18 ]
+then
+wifi_file_basename=$(basename ${wifi_file})
+wifi_conf_target_file="${sdcard_mount_p2}/etc/NetworkManager/system-connections/${wifi_file_basename}"
+cp "${wifi_file}" "${wifi_conf_target_file}"
+chmod 0600 ${wifi_conf_target_file}
+chown root:root ${wifi_conf_target_file}
+if [ -e "${wifi_conf_target_file}" ]
+then
+  echo_debug "The wifi file \"${wifi_file}\" has been copied"
+else
+  echo_error "Can't find the NetworkManager conf file \"${wifi_conf_target_file}\""
+  exit 8
 fi
 
 echo_debug "Change the passwords and sshd_config file"

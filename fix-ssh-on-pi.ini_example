@@ -1,15 +1,20 @@
 ### Generate the password hash using `mkpasswd -m sha512crypt`
+### OS uses these entries to check password from stdin.
 root_password_hash='CHANGEME'
 pi_password_hash='CHANGEME'
 
 ### Generate the password hash using `echo 'mypassword' | openssl passwd -6 -stdin`
 ### https://www.raspberrypi.com/documentation/computers/configuration.html#configuring-a-user
+### The file needs to contain a single line with <username>:<password>.
+### <username> is the name of the default user. It needs to be "pi" since code
+### manipulating ${pi_password_hash} assumes "pi" username.
 userconf_txt_file="/home/CHANGEME/.ssh/userconf.txt"
 
 ### ssh-keygen -t ed25519 -f ./id_ed25519 -C "Raspberry Pi keys for Ansible"
 public_key_file="/home/CHANGEME/.ssh/id_ed25519_pi.pub"
 
-### https://www.raspberrypi.com/documentation/computers/configuration.html#setting-up-a-headless-raspberry-pi
+### wpa_supplicant: https://www.raspberrypi.com/documentation/computers/configuration.html#setting-up-a-headless-raspberry-pi
+### network manager (since Bookworm): https://forums.raspberrypi.com/viewtopic.php?t=357623
 wifi_file="/home/CHANGEME/.ssh/wpa_supplicant.conf"
 
 ### The script to run at boot
