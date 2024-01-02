@@ -13,9 +13,8 @@ userconf_txt_file="/home/CHANGEME/.ssh/userconf.txt"
 ### ssh-keygen -t ed25519 -f ./id_ed25519 -C "Raspberry Pi keys for Ansible"
 public_key_file="/home/CHANGEME/.ssh/id_ed25519_pi.pub"
 
-### wpa_supplicant: https://www.raspberrypi.com/documentation/computers/configuration.html#setting-up-a-headless-raspberry-pi
 ### network manager (since Bookworm): https://forums.raspberrypi.com/viewtopic.php?t=357623
-wifi_file="/home/CHANGEME/.ssh/wpa_supplicant.conf"
+wifi_file="/home/CHANGEME/.ssh/wifi.nmconnection"
 
 ### The script to run at boot
 first_boot="firstboot.sh"

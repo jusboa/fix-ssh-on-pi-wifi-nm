@@ -197,7 +197,7 @@ then
   echo_error "   ssh-keygen -t ed25519 -f ./${public_key_file} -C \"Raspberry Pi keys\""
   exit 3
 fi
-# version_id=$(grep "^VERSION_ID=" /etc/os-release | cut -d "=" -f2 | tr -d '"')
+
 if [ ! -e "${wifi_file}" ]
 then
   echo_error "Can't find the NetworkManager conf file \"${wifi_file}\""
@@ -402,8 +402,7 @@ then
     echo_error "Can't find the mounted card\"${sdcard_mount_p2}/etc/shadow\""
     exit 10
 fi
-if [ ${version_id} -ge 18 ]
-then
+
 wifi_file_basename=$(basename ${wifi_file})
 wifi_conf_target_file="${sdcard_mount_p2}/etc/NetworkManager/system-connections/${wifi_file_basename}"
 cp "${wifi_file}" "${wifi_conf_target_file}"
