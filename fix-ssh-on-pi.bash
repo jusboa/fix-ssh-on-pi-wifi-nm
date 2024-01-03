@@ -103,7 +103,12 @@ do
   check_tool "${this_tool}"
 done
 
-settings_file="fix-ssh-on-pi.ini"
+if [ "$#" -ge 1 ]
+then
+    settings_file="$1"
+else
+    settings_file="fix-ssh-on-pi.ini"
+fi
 
 if [ -e "${settings_file}" ]
 then
